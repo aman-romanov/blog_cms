@@ -1,6 +1,9 @@
 <?php
 
     require "includes/database.php";
+    require "includes/redirect.php";
+    
+    session_start();
     $conn = getDB();
 
     $sql = "SELECT *
@@ -28,6 +31,13 @@
     </header>
 
     <main>
+        <?php if(isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']=true):?>
+            <div>Welcome!</div>
+            <br>
+            <a href="login.php">Logout</a>
+        <?php else{
+            redirect(/php_course/login.php);
+        } endif;?>
         <a href="new-article.php">Create new article</a>
         <?php if (empty($articles)): ?>
             <p>No articles found.</p>
