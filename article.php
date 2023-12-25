@@ -1,12 +1,13 @@
 <?php
 
-    require "includes/database.php";
-    require "includes/getArticleID.php";
+    require "classes/Database.php";
+    require "classes/Article.php";
 
-    $conn = getDB();
+    $db = new Database();
+    $conn = $db->getDB();
 
     if (isset($_GET["id"])) { 
-        $article = getArticleID($conn, $_GET['id']);
+        $article = Article::getArticleByID($conn, $_GET['id']);
     } else {
         $article === null;
     };
@@ -14,8 +15,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php if (is_numeric($_GET["id"])):?>
-        <title><?= $article['title']; ?></title>
+    <?php if ($article):?>
+        <title><?= $article->title; ?></title>
     <?php else:?>
         <title> Page not found</title>
     <?php endif; ?>
@@ -25,23 +26,23 @@
     <header>
         <a href="index.php">Back</a> 
         <br>
-        <?php if (is_numeric($_GET["id"])):?>
-            <h1><?= htmlspecialchars($article['title']); ?></h1>
+        <?php if ($article):?>
+            <h1><?= htmlspecialchars($article->title); ?></h1>
         <?php else:?>
             <h1>Ooops...</h1>
         <?php endif; ?>
     </header>
 
     <main>
-        <?php if ($article === null): ?>
-            <p>Article not found.</p>
-        <?php else: ?>
+        <?php if ($article): ?>
             <div>
-                <p><?= htmlspecialchars($article['content']); ?></p>
+                <p><?= htmlspecialchars($article->content); ?></p>
             </div>
+        <?php else: ?>
+            <p>Article not found.</p>
         <?php endif; ?>
-        <a href="edit-article.php?id=<?=$_GET["id"];?>">Edit</a>
-        <a href="delete-article.php?id=<?=$_GET["id"];?>">Delete</a>
+        <a href="edit-article.php?id=<?=$article->id;?>">Edit</a>
+        <a href="delete-article.php?id=<?=$article->id;?>">Delete</a>
     </main>
 </body>
 </html>

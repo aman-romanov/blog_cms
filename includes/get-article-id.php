@@ -14,16 +14,12 @@
             FROM articles
             WHERE id = ?";
 
-        $stmt = mysqli_prepare($conn, $sql);
-        if ($stmt === false){
-            echo mysqli_error($conn);
+        $stmt = $conn->prepare($sql);
 
-        }else{
-            mysqli_stmt_bind_param($stmt, "i", $id);
-            if (mysqli_stmt_execute($stmt)){
-                $result = mysqli_stmt_get_result($stmt);
-                return mysqli_fetch_array($result, MYSQLI_ASSOC);
-            }
+        $stmt->bindValue('?', $id, PDO::PARAM_INT);
+
+        if ($stmt->execute()){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
 ?>

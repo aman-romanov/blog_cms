@@ -1,6 +1,6 @@
-<?php  if(!empty($error) ): ?>
+<?php  if(!empty($article->error) ): ?>
     <ul>
-        <?php foreach ($error as $errorText):?>
+        <?php foreach ($article->error as $errorText):?>
         <li><?= $errorText; ?></li>
         <?php endforeach; ?>
     </ul>
@@ -8,15 +8,15 @@
 <form action="" method="post">
     <div>
         <label for="title">Title:</label>
-        <input name="text" id="title" placeholder= "Article name" value ="<?= htmlspecialchars($title); ?>" >
+        <input name="text" id="title" placeholder= "Article name" value ="<?= htmlspecialchars($article->title ?? ""); ?>" >
     </div>
     <div>
         <label for="content">Content:</label>
-        <textarea name="content" id="content" cols="40" rows="4" placeholder="Article body"><?= htmlspecialchars($content); ?></textarea>
+        <textarea name="content" id="content" cols="40" rows="4" placeholder="Article body"><?= htmlspecialchars($article->content ?? ""); ?></textarea>
     </div>
     <div>
         <label for="date">Date:</label>
-        <input type="text" id="date" name="date" value ="<?= htmlspecialchars($date); ?>">
+        <input id="date" name="date" value ="<?= htmlspecialchars($article->published_at ?? ""); ?>">
     </div>
     <button>Submit</button> 
     <br>

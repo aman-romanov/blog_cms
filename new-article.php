@@ -1,43 +1,23 @@
 <?php
 
-    require 'includes/database.php';
-    require "includes/validate-form.php";
+    require 'classes/Database.php';
+    require "classes/Article.php";
     require "includes/redirect.php";
 
-    $title ='';
-    $content ='';
-    $date = '';
+    $article = new Article;
+
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
-        $title = $_POST['text'];
-        $content = $_POST['content'];
-        $date = $_POST['date'];
+        $db = new Database();
+        $conn = $db->getDB();
 
-        $error = validateArticle($title, $content, $date);
+        $article->title = $_POST['text'];
+        $article->content = $_POST['content'];
+        $article->published_at = $_POST['date'];
 
-        if(empty($error)){
-            $conn = getDB();
-
-            $sql = "INSERT INTO articles (title, content, published_at)
-                    VALUES (?,?,?)";
-    
-            $stmt = mysqli_prepare($conn, $sql);
-    
-            if ($stmt === false){
-                echo mysqli_error($conn);
-            } else {
-                if($date == ''){
-                    $date = null;
-                }
-                mysqli_stmt_bind_param ($stmt, "sss", $title, $content, $date);
-                if (mysqli_stmt_execute($stmt)) {
-                    $id = mysqli_insert_id($conn);
-                    redirect ("/php_course/article.php?id=$id");
-                } else {
-                    mysqli_stmt_error($stmt);
-                }
-            }
-        }
+       if($article->createArticle($conn)){
+            redirect ("/cms_blog/article.php?id={$article->id}");
+        } 
     }
 ?>
 

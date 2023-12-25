@@ -3,10 +3,11 @@ require "includes/redirect.php";
 
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] = 'POST'){
-    if ($_POST['username'] = "aman" && $_POST['password'] = "password"){
-        $_SESSION['is_logged_in'] = 'true';
-        redirect(/blog_cms/index.php);
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+    if ($_POST['username'] == "aman" && $_POST['password'] == "password"){
+        session_regenerate_id(true);
+        $_SESSION['is_logged_in'] = true;
+        redirect('/cms_blog/index.php');
     } else{
         $error = "Invalid username or password";
     }
@@ -23,6 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] = 'POST'){
 </head>
 <body>
     <h2>Login</h2>
+    <?php if(! empty($error)): ?>
+        <div><?=$error;?></div>
+    <?php endif;?>
     <form method='POST'>
         <label for="username">Username:</label>
         <input type="text" name='username'>
