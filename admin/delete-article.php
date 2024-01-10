@@ -1,11 +1,12 @@
 <?php
 
-    require "classes/Database.php";
-    require "classes/Article.php";
-    require "includes/redirect.php";
+    require "../includes/init.php";
+    session_start();
 
     $db = new Database();
     $conn = $db->getDB();
+
+    Auth::requireLogin();
 
     if (isset($_GET["id"])) { 
         $article = Article::getArticleByID($conn, $_GET['id']);
@@ -18,7 +19,7 @@
     }
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         if ($article->deleteArticle($conn)) {
-                redirect ("/cms_blog/index.php");
+                Link::redirect ("/cms_blog/admin/index.php");
         }
     }
 ?>
@@ -35,6 +36,6 @@
         <form method="POST">
             <button>Delete</button>
         </form>
-        <a href="article.php?id=<?=$article->id;?>">Cancel</a>
+        <a href="/cms_blog/admin/article.php?id=<?=$article->id;?>">Cancel</a>
     </body>
     </html>

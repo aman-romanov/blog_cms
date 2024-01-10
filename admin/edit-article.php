@@ -1,11 +1,11 @@
 <?php
 
-    require "classes/Database.php";
-    require "classes/Article.php";
-    require "includes/redirect.php";
+    require "../includes/init.php";
+    session_start();
 
     $db = new Database();
     $conn = $db->getDB();
+    Auth::requireLogin();
 
     if (isset($_GET["id"])) { 
         $article = Article::getArticleByID($conn, $_GET['id']);
@@ -22,8 +22,8 @@
         $article->content = $_POST['content'];
         $article->published_at = $_POST['date'];
 
-       if($article->updateArticle($conn)){
-            redirect ("/cms_blog/article.php?id={$article->id}");
+        if($article->updateArticle($conn)){
+            Link::redirect ("/cms_blog/admin/article.php?id={$article->id}");
         } 
         
     }

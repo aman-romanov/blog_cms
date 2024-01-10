@@ -1,6 +1,6 @@
 <?php
 
-    require "includes/init.php";
+    require "../includes/init.php";
 
     $db = new Database();
     $conn = $db->getDB();
@@ -23,7 +23,7 @@
 </head>
 <body>
     <header>
-        <a href="index.php">Back</a> 
+        <a href="/cms_blog/admin/index.php">Back</a> 
         <br>
         <?php if ($article):?>
             <h1><?= htmlspecialchars($article->title); ?></h1>
@@ -40,6 +40,8 @@
         <?php else: ?>
             <p>Article not found.</p>
         <?php endif; ?>
+        <a href="edit-article.php?id=<?=$article->id;?>">Edit</a>
+        <a href="delete-article.php?id=<?=$article->id;?>">Delete</a>
     </main>
 </body>
 </html>

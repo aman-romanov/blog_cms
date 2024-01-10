@@ -1,11 +1,11 @@
 <?php
 
-    require 'classes/Database.php';
-    require "classes/Article.php";
-    require "includes/redirect.php";
+    require "../includes/init.php";
+
+    session_start();
 
     $article = new Article;
-
+    Auth::requireLogin();
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $db = new Database();
@@ -15,8 +15,8 @@
         $article->content = $_POST['content'];
         $article->published_at = $_POST['date'];
 
-       if($article->createArticle($conn)){
-            redirect ("/cms_blog/article.php?id={$article->id}");
+        if($article->createArticle($conn)){
+            Link::redirect ("/cms_blog/admin/article.php?id={$article->id}");
         } 
     }
 ?>

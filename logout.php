@@ -1,5 +1,5 @@
 <?php
-    require 'includes/redirect.php';
+    require "includes/init.php";
 
     session_start();
     $_SESSION = array();
@@ -14,6 +14,6 @@
         );
     }
     session_destroy();
-    redirect('/cms_blog/login.php');
+    Link::redirect('/cms_blog/index.php');
 
 ?>
