@@ -27,6 +27,9 @@
         <br>
         <?php if ($article):?>
             <h1><?= htmlspecialchars($article->title); ?></h1>
+            <?php if($article->image): ?>
+                <img src="uploads/<?=$article->image?>" alt="Article image">
+            <?php endif; ?>
         <?php else:?>
             <h1>Ooops...</h1>
         <?php endif; ?>

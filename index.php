@@ -6,7 +6,8 @@
     $db = new Database();
     $conn = $db->getDB();
 
-    $articles = Article::getAll($conn);
+    $paginator = new Paginator($_GET['page'] ?? 1, 5, Article::getArticlesNum($conn));
+    $articles = Article::getByPage($conn, $paginator->limit, $paginator->offset);
 ?>
 <!DOCTYPE html>
 <html>
@@ -34,6 +35,20 @@
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>
+        <nav>
+            <ul>
+                <?php if($paginator->prev):?>
+                    <li><a href="?page=<?=$paginator->prev?>">Prev</a></li>
+                <?php else:?>
+                    <li><p>Prev</p></li>
+                <?php endif;?>
+                <?php if($paginator->next):?>
+                    <li><a href="?page=<?=$paginator->next?>">Next</a></li>
+                <?php else:?>
+                    <li><p>Next</p></li>
+                <?php endif;?>
+            </ul>
+        </nav>
     </main>
 </body>
 </html>
