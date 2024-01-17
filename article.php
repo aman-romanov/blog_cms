@@ -6,7 +6,7 @@
     $conn = $db->getDB();
 
     if (isset($_GET["id"])) { 
-        $article = Article::getArticleByID($conn, $_GET['id']);
+        $article = Article::getWithCategories($conn, $_GET['id']);
     } else {
         $article === null;
     };
@@ -15,7 +15,7 @@
 <html>
 <head>
     <?php if ($article):?>
-        <title><?= $article->title; ?></title>
+        <title><?= $article['0']['title']; ?></title>
     <?php else:?>
         <title> Page not found</title>
     <?php endif; ?>
@@ -26,9 +26,14 @@
         <a href="index.php">Back</a> 
         <br>
         <?php if ($article):?>
-            <h1><?= htmlspecialchars($article->title); ?></h1>
-            <?php if($article->image): ?>
-                <img src="uploads/<?=$article->image?>" alt="Article image">
+            <h1><?= htmlspecialchars($article['0']['title']); ?></h1>
+            <?php if($article['0']['category_name']):?>
+                <?php foreach($article as $a):?>
+                    <p><?=htmlspecialchars($a['category_name']);?></p>
+                <?php endforeach;?>
+            <?php endif;?>
+            <?php if($article['0']['image']): ?>
+                <img src="uploads/<?=$article['0']['image'];?>" alt="Article image">
             <?php endif; ?>
         <?php else:?>
             <h1>Ooops...</h1>
@@ -38,7 +43,7 @@
     <main>
         <?php if ($article): ?>
             <div>
-                <p><?= htmlspecialchars($article->content); ?></p>
+                <?= htmlspecialchars($article['0']['content']); ?>
             </div>
         <?php else: ?>
             <p>Article not found.</p>

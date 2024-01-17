@@ -6,16 +6,22 @@
 
     $article = new Article;
     Auth::requireLogin();
-    if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
-        $db = new Database();
-        $conn = $db->getDB();
+    $category_ids = [];
+    $db = new Database();
+    $conn = $db->getDB();
+    $categories = Category::getAll($conn);
+    
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $article->title = $_POST['text'];
         $article->content = $_POST['content'];
         $article->published_at = $_POST['date'];
+        $category_ids = $_POST['category'] ?? [];
 
         if($article->createArticle($conn)){
+            $article->setCategories($conn, $category_ids);
             Link::redirect ("/cms_blog/admin/article.php?id={$article->id}");
         } 
     }

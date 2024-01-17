@@ -86,6 +86,56 @@ class Article {
     }
     /**
      * 
+     * Get article content with it's ctaegory based on ID
+     * 
+     * @param object $conn is Connection to the DB
+     * @param int $id is ID of the article
+     * 
+     * @return array An associativ array of the Article class or NULL if not found
+     * 
+     */
+    public static function getWithCategories($conn, $id){
+        $sql = "SELECT articles.*, category.category AS category_name
+                FROM articles
+                LEFT JOIN article_categories
+                ON articles.id = article_categories.article_id
+                LEFT JOIN category
+                ON article_categories.category_id = category.id
+                WHERE articles.id = :id";
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    /**
+     * 
+     * Get articl's categories
+     * 
+     * @param object $conn is Connection to the DB
+     * 
+     * @return array An associativ array of the Article class or NULL if not found
+     * 
+     */
+    public function getCategories($conn){
+        $sql = "SELECT category.*
+                FROM category
+                JOIN article_categories
+                ON category.id = article_categories.category_id
+                WHERE article_id = :id";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    /**
+     * 
      * Creates article on the server side through form
      * 
      * @param object $conn is Connection to the DB
@@ -114,6 +164,46 @@ class Article {
         }else{
             return false;
         }
+    }
+    /**
+     * Set category for the article
+     * 
+     * @param object $conn is Connection to the DB
+     * @param int article id
+     * 
+     * @return boolean True if changes are succcesfull or False otherwise
+     */
+    public function setCategories($conn, $ids){
+        if($ids){
+            $sql = "INSERT IGNORE INTO article_categories(article_id, category_id)
+                    VALUES";
+
+            $values = [];
+
+            foreach($ids as $id){
+                $values[] = "({$this->id}, ?)";
+            }
+
+            $sql .= implode(", ", $values);
+            $stmt = $conn->prepare($sql);
+
+            foreach ($ids as $i => $id){
+                $stmt->bindValue($i + 1, $id, PDO::PARAM_INT);
+               
+            }
+            $stmt->execute();
+        }
+        $sql = "DELETE FROM article_categories
+                WHERE article_id = {$this->id}";
+        if ($ids){
+            $placeholders = array_fill(0, count($ids), '?');
+            $sql .= " AND category_id NOT IN (" . implode(", ", $placeholders) . ")";
+        }
+        $stmt = $conn->prepare($sql);
+        foreach ($ids as $i => $id){
+            $stmt->bindValue($i + 1, $id, PDO::PARAM_INT);
+        }
+        $stmt->execute();
     }
 
     /**
