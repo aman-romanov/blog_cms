@@ -49,8 +49,10 @@
             <p>Article not found.</p>
         <?php endif; ?>
         <a href="edit-article.php?id=<?=$article['0']['id'];?>">Edit</a>
-        <a href="delete-article.php?id=<?=$article['0']['id'];?>">Delete</a>
+        <a class="delete" href="delete-article.php?id=<?=$article['0']['id'];?>">Delete</a>
         <a href="edit-article-image.php?id=<?=$article['0']['id'];?>">Edit image</a>
     </main>
+    <script   src="https://code.jquery.com/jquery-3.7.1.min.js"   integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="   crossorigin="anonymous"></script>
+    <script src="../js/script.js"></script>
 </body>
 </html>

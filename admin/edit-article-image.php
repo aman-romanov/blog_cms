@@ -93,8 +93,10 @@
         <button>Upload</button>
     </form>
     <?php if($article->image): ?>
-        <a href="/cms_blog/admin/delete-article-image.php?id=<?=$_GET["id"];?>">Delete</a>
+        <a class="delete" href="/cms_blog/admin/delete-article-image.php?id=<?=$_GET["id"];?>">Delete</a>
     <?php endif; ?>
     <a href="/cms_blog/admin/article.php?id=<?=$_GET["id"];?>">Back</a>
+    <script   src="https://code.jquery.com/jquery-3.7.1.min.js"   integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="   crossorigin="anonymous"></script>
+    <script src="../js/script.js"></script>
 </body>
 </html>

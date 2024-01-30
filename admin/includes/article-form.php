@@ -5,7 +5,7 @@
         <?php endforeach; ?>
     </ul>
 <?php endif;?>
-<form action="" method="post">
+<form id="article-form" action="" method="post">
     <div>
         <label for="title">Title:</label>
         <input name="text" id="title" placeholder= "Article name" value ="<?= htmlspecialchars($article->title ?? ""); ?>" >
@@ -31,3 +31,6 @@
     <br>
     <a href="index.php">Cancel</a>
 </form>
+<script   src="https://code.jquery.com/jquery-3.7.1.min.js"   integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="   crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" ></script>
+<script src="../js/script.js"></script>
