@@ -29,7 +29,7 @@ $('#article-form').validate({
 
 });
 
-$('#formContact').validate({
+$('#contactForm').validate({
     rules:{
         email:{
             required: true,
